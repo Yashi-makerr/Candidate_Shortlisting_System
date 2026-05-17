@@ -1,34 +1,33 @@
-import { Briefcase, Users, Brain } from "lucide-react";
+import Sidebar from "../components/Sidebar";
 
 function DashboardLayout({ children }) {
+
   return (
-    <div className="flex min-h-screen gradient-bg text-white">
 
-      <aside className="w-64 p-6 border-r border-slate-800">
-        <h1 className="text-2xl font-bold mb-10">
-          AI Recruiter
-        </h1>
+    <div className="
+    flex
+    min-h-screen
+    bg-gradient-to-br
+    from-slate-950
+    via-blue-950
+    to-slate-950
+    text-white
+    ">
 
-        <div className="space-y-4">
-          <button className="flex items-center gap-3 hover:text-cyan-400">
-            <Users size={20} />
-            Candidates
-          </button>
+      {/* SIDEBAR */}
 
-          <button className="flex items-center gap-3 hover:text-cyan-400">
-            <Briefcase size={20} />
-            Jobs
-          </button>
+      <Sidebar />
 
-          <button className="flex items-center gap-3 hover:text-cyan-400">
-            <Brain size={20} />
-            AI Ranking
-          </button>
-        </div>
-      </aside>
+      {/* MAIN CONTENT */}
 
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main className="
+      flex-1
+      p-8
+      overflow-y-auto
+      ">
+
         {children}
+
       </main>
 
     </div>

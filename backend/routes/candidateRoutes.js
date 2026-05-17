@@ -27,30 +27,71 @@ router.get("/search", async (req, res) => {
 
 router.post(
   "/upload",
+
   upload.single("resume"),
 
   async (req, res) => {
 
     try {
 
-      const resumeText =
-      await parseResume(
-        req.file.path
-      );
+      // CHECK FILE
+
+      if (!req.file) {
+
+        return res.status(400).json({
+
+          message:
+          "No file uploaded"
+
+        });
+      }
+
+      let extractedText = "";
+
+      // SAFE PDF PARSE
+
+      try {
+
+        extractedText =
+        await parseResume(
+          req.file.path
+        );
+
+      } catch (pdfError) {
+
+        console.log(
+          "PDF Parse Error:",
+          pdfError.message
+        );
+
+        extractedText =
+        "Resume parsing failed";
+      }
 
       res.json({
+
+        success: true,
+
         file: req.file,
-        extractedText: resumeText
+
+        extractedText
+
       });
 
     } catch (error) {
 
+      console.log(
+        "Upload Error:",
+        error.message
+      );
+
       res.status(500).json({
-        error: error.message
+
+        message:
+        "Resume upload failed"
+
       });
-
     }
-
   }
 );
 module.exports = router;

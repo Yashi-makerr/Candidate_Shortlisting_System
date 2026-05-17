@@ -18,6 +18,8 @@ router.post(
   async (req, res) => {
 
     const {
+      name,
+      phone,
       email,
       password
     } = req.body;
@@ -30,6 +32,8 @@ router.post(
 
     const user =
     new User({
+      name,
+      phone,
       email,
       password: hashed
     });

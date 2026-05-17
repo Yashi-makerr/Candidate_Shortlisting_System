@@ -2,53 +2,120 @@ import {
   Users,
   Brain,
   Briefcase,
-  LogOut
+  LayoutDashboard,
+  LogOut,
+  MessageSquare
 } from "lucide-react";
+
+import {
+  useNavigate,
+  useLocation
+} from "react-router-dom";
 
 function Sidebar() {
 
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
   const logout = () => {
 
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
 
-    window.location.href =
-    "/login";
+    navigate("/register");
+
+    window.location.reload();
+  };
+
+  const menuClass = (path) => {
+
+    return `
+    flex
+    items-center
+    gap-3
+    p-4
+    rounded-xl
+    cursor-pointer
+    transition-all
+    duration-300
+
+    ${
+      location.pathname === path
+      ? "bg-cyan-500/20 text-cyan-400 shadow-lg"
+      : "hover:bg-slate-800 text-slate-300"
+    }
+    `;
   };
 
   return (
 
     <div className="
     w-64
+    min-h-screen
     border-r
     border-slate-800
     p-6
     bg-slate-950/70
     backdrop-blur-xl
+    sticky
+    top-0
     ">
 
-      <h1 className="
-      text-3xl
-      font-bold
-      text-cyan-400
-      mb-10
-      ">
+      {/* LOGO */}
 
-        AI Recruiter
+      <div
+        onClick={() => navigate("/dashboard")}
+        className="cursor-pointer"
+      >
 
-      </h1>
-
-      <div className="space-y-4">
-
-        <div className="
-        flex
-        items-center
-        gap-3
-        p-3
-        rounded-xl
-        hover:bg-slate-800
-        cursor-pointer
-        transition-all
+        <h1 className="
+        text-3xl
+        font-bold
+        text-cyan-400
+        mb-12
         ">
+
+          AI Recruiter
+
+        </h1>
+
+      </div>
+
+      {/* MENU */}
+
+      <div className="space-y-3">
+
+        {/* DASHBOARD */}
+
+        <div
+          onClick={() =>
+            navigate("/dashboard")
+          }
+          className={
+            menuClass("/dashboard")
+          }
+        >
+
+          <LayoutDashboard size={20} />
+
+          Dashboard
+
+        </div>
+
+        {/* CANDIDATES */}
+
+        <div
+          onClick={() =>
+            navigate(
+              "/dashboard/candidates"
+            )
+          }
+          className={
+            menuClass(
+              "/dashboard/candidates"
+            )
+          }
+        >
 
           <Users size={20} />
 
@@ -56,16 +123,20 @@ function Sidebar() {
 
         </div>
 
-        <div className="
-        flex
-        items-center
-        gap-3
-        p-3
-        rounded-xl
-        hover:bg-slate-800
-        cursor-pointer
-        transition-all
-        ">
+        {/* JOBS */}
+
+        <div
+          onClick={() =>
+            navigate(
+              "/dashboard/jobs"
+            )
+          }
+          className={
+            menuClass(
+              "/dashboard/jobs"
+            )
+          }
+        >
 
           <Briefcase size={20} />
 
@@ -73,16 +144,20 @@ function Sidebar() {
 
         </div>
 
-        <div className="
-        flex
-        items-center
-        gap-3
-        p-3
-        rounded-xl
-        hover:bg-slate-800
-        cursor-pointer
-        transition-all
-        ">
+        {/* AI RANKING */}
+
+        <div
+          onClick={() =>
+            navigate(
+              "/dashboard/ai-ranking"
+            )
+          }
+          className={
+            menuClass(
+              "/dashboard/ai-ranking"
+            )
+          }
+        >
 
           <Brain size={20} />
 
@@ -91,16 +166,38 @@ function Sidebar() {
         </div>
 
         <div
+          onClick={() =>
+            navigate(
+              "/dashboard/interview-assistant"
+            )
+          }
+          className={
+            menuClass(
+              "/dashboard/interview-assistant"
+            )
+          }
+        >
+
+          <MessageSquare size={20} />
+
+          Interview AI
+
+        </div>
+
+        {/* LOGOUT */}
+
+        <div
           onClick={logout}
           className="
           flex
           items-center
           gap-3
-          p-3
+          p-4
           rounded-xl
           hover:bg-red-500/20
           cursor-pointer
           transition-all
+          duration-300
           mt-10
           text-red-400
           "

@@ -8,9 +8,11 @@ import API from "../services/api";
 function Register() {
 
   const [form, setForm] = useState({
-    email: "",
-    password: ""
-  });
+  name: "",
+  phone: "",
+  email: "",
+  password: ""
+});
   const navigate = useNavigate();
 
   const handleRegister =
@@ -64,6 +66,45 @@ function Register() {
           Create Account
 
         </h1>
+
+        <input
+          type="text"
+          placeholder="Full Name"
+          className="
+          w-full
+          p-4
+          mb-4
+          rounded-xl
+          bg-slate-900
+          border
+          border-slate-700
+          "
+          onChange={(e) =>
+            setForm({
+              ...form,
+              name: e.target.value
+            })
+          }
+        />
+        <input
+          type="text"
+          placeholder="Phone Number"
+          className="
+          w-full
+          p-4
+          mb-4
+          rounded-xl
+          bg-slate-900
+          border
+          border-slate-700
+          "
+          onChange={(e) =>
+            setForm({
+              ...form,
+              phone: e.target.value
+            })
+          }
+        />
 
         <input
           type="email"

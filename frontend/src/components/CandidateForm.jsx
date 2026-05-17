@@ -12,41 +12,72 @@ function CandidateForm() {
     bio: ""
   });
   const [resume, setResume] = useState(null);
+  const [loading, setLoading] = useState(false);
   const handleSubmit =
-        async (e) => {
+async (e) => {
 
-        e.preventDefault();
+  e.preventDefault();
 
-        const payload = {
-            ...form,
-            skills: form.skills.split(",")
-        };
+  try {
 
-        await API.post(
-            "/candidates",
-            payload
-        );
+    setLoading(true);
 
-        if (resume) {
+    const payload = {
+      ...form,
+      skills:
+      form.skills
+      .split(",")
+      .map((skill) =>
+        skill.trim()
+      )
 
-            const formData =
-            new FormData();
-
-            formData.append(
-            "resume",
-            resume
-            );
-
-            await API.post(
-            "/candidates/upload",
-            formData
-            );
-        }
-
-        toast.success(
-            "Candidate Added"
-        ); 
     };
+
+    // SAVE CANDIDATE
+
+    await API.post(
+      "/candidates",
+      payload
+    );
+    // RESUME UPLOAD
+    if (resume) {
+      const formData =
+      new FormData();
+      formData.append(
+        "resume",
+        resume
+      );
+
+      await API.post(
+        "/candidates/upload",
+        formData
+      );
+    }
+    // SUCCESS MESSAGE
+    toast.success(
+      "Candidate Added Successfully"
+    );
+
+    // CLEAR FORM
+    setForm({
+      name: "",
+      email: "",
+      skills: "",
+      experience: "",
+      bio: ""
+    });
+
+    setResume(null);
+  } catch (error) {
+
+    console.log(error);
+    toast.error(
+      "Failed to Add Candidate"
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <form
@@ -104,9 +135,31 @@ function CandidateForm() {
         className="w-full p-3 mb-4 rounded-xl bg-slate-900 border border-slate-700"
         />
 
-      <button className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:scale-[1.02] transition-all duration-300 py-3 rounded-xl font-bold shadow-lg shadow-cyan-500/20">
-        Add Candidate
-      </button>
+      <button
+        disabled={loading}
+        className="
+        w-full
+        bg-gradient-to-r
+        from-cyan-500
+        to-blue-600
+        hover:scale-[1.02]
+        transition-all
+        duration-300
+        py-3
+        rounded-xl
+        font-bold
+        shadow-lg
+        shadow-cyan-500/20
+        disabled:opacity-50
+        "
+      >
+
+        {
+          loading
+          ? "Adding Candidate..."
+          : "Add Candidate"
+        }
+        </button>
 
     </form>
   );

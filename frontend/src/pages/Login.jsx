@@ -22,16 +22,17 @@ function Login() {
       form
     );
 
-    localStorage.setItem(
-      "token",
-      response.data.token
+    sessionStorage.setItem(
+    "token",
+    response.data.token
     );
 
     toast.success(
       "Login Successful"
     );
 
-    navigate("/");
+    navigate("/dashboard");
+    window.location.reload();
 
   } catch (error) {
 
