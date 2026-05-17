@@ -28,7 +28,7 @@ function InterviewAssistant() {
       await API.post(
         "/ai/interview-chat",
         {
-          question
+          message:question
         }
       );
 

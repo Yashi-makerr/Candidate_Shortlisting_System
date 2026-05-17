@@ -10,6 +10,7 @@ backend/uploads/
 # build folders
 dist/
 build/
+uploads/
 
 # logs
 npm-debug.log*

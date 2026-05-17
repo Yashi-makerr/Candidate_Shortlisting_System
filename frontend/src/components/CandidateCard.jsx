@@ -22,23 +22,36 @@ function CandidateCard({ candidate }) {
 
   // GENERATE QUESTIONS FUNCTION
   const generateQuestions =
-  async () => {
+async () => {
+
+  try {
 
     const response =
     await API.post(
+
       "/interview/generate-questions",
+
       {
-        skills: candidate.skills
+        skills:
+        candidate.skills
       }
+
     );
 
     setQuestions(
-      response.data
-      .choices[0]
-      .message
-      .content
+      response.data.content
     );
-  };
+
+  } catch (error) {
+
+    console.log(error);
+
+    toast.error(
+      "Failed to Generate Questions"
+    );
+
+  }
+};
 
   return (
       <div className="glass p-5 rounded-2xl hover:scale-[1.02] transition-all duration-300 shadow-xl hover:shadow-cyan-500/10">
