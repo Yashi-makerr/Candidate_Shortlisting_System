@@ -67,7 +67,7 @@ function Login() {
         text-center
         ">
 
-          Recruiter Login
+          User Login
 
         </h1>
 
