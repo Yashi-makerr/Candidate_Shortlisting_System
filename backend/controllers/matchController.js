@@ -1,5 +1,5 @@
-const Candidate = require("../models/Candidate");
-const matchCandidates = require("../utils/matchLogic");
+const Candidate = require("../models/Complaint");
+const matchCandidates = require("../utils/complaintAnalyzer");
 
 exports.shortlistCandidates = async (req, res) => {
 

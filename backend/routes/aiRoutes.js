@@ -16,10 +16,10 @@ router.post(
   aiShortlist
 );
 
-
 // INTERVIEW AI CHAT
 
 router.post(
+
   "/interview-chat",
 
   async (req, res) => {
@@ -28,55 +28,197 @@ router.post(
 
       const { message } = req.body;
 
-      const prompt = `
-      You are an AI Interview Assistant.
+      const text =
+      message.toLowerCase();
 
-      Answer this interview question professionally:
+      // =========================
+      // LOCAL AI RESPONSES
+      // =========================
 
-      ${message}
-      `;
+      let reply = "";
 
-      const response = await axios.post(
-        "https://openrouter.ai/api/v1/chat/completions",
+      // WATER
 
-        {
-          model: "meta-llama/llama-3-8b-instruct",
+      if (
+        text.includes("water")
+      ) {
 
-          messages: [
-            {
-              role: "user",
-              content: prompt
-            }
-          ]
-        },
+        reply = `
+Water supply related complaints are handled by the Water Supply Department.
 
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-            "Content-Type": "application/json"
-          }
-        }
-      );
+Suggested Action:
+• Mention exact location
+• Upload leakage proof if available
+• Mark urgency if water wastage is high
+
+Priority:
+Medium Priority
+
+Expected Resolution Time:
+24-48 hours.
+`;
+
+      }
+
+      // ELECTRICITY
+
+      else if (
+        text.includes("electric") ||
+        text.includes("power")
+      ) {
+
+        reply = `
+Electricity complaints are considered HIGH priority.
+
+Department:
+Electricity Department
+
+Recommended Action:
+• Avoid touching exposed wires
+• Report transformer/sparking issues immediately
+• Mention outage duration
+
+Expected Resolution Time:
+2-12 hours.
+`;
+
+      }
+
+      // GARBAGE
+
+      else if (
+        text.includes("garbage") ||
+        text.includes("waste")
+      ) {
+
+        reply = `
+Garbage complaints are handled by the Sanitation Department.
+
+Suggested Action:
+• Mention area details
+• Mention garbage quantity
+• Add health hazard details if present
+
+Priority:
+Medium Priority.
+`;
+
+      }
+
+      // ROAD
+
+      else if (
+        text.includes("road") ||
+        text.includes("pothole")
+      ) {
+
+        reply = `
+Road damage complaints are handled by the Road Maintenance Department.
+
+Suggested Action:
+• Mention road name
+• Mention accident risk
+• Mention traffic blockage details
+
+Priority:
+Medium to High.
+`;
+
+      }
+
+      // DRAINAGE
+
+      else if (
+        text.includes("drain") ||
+        text.includes("sewer")
+      ) {
+
+        reply = `
+Drainage blockage complaints are handled by the Drainage Department.
+
+Suggested Action:
+• Mention water overflow condition
+• Mention smell or hygiene issues
+• Mention affected area
+
+Priority:
+Medium Priority.
+`;
+
+      }
+
+      // WOMEN SAFETY
+
+      else if (
+        text.includes("women") ||
+        text.includes("harassment") ||
+        text.includes("safety")
+      ) {
+
+        reply = `
+Women safety complaints are treated as HIGH PRIORITY.
+
+Department:
+Police Department
+
+Recommended Action:
+• Contact emergency helpline immediately
+• Share incident location
+• Mention suspect details if possible
+
+Emergency action may be initiated.
+`;
+
+      }
+
+      // DEFAULT
+
+      else {
+
+        reply = `
+Your complaint/query has been received successfully.
+
+Please provide:
+• complaint type
+• location
+• issue details
+
+Supported complaint categories:
+• Water Supply
+• Electricity
+• Garbage
+• Road Damage
+• Drainage
+• Pollution
+• Traffic
+• Women Safety
+• Street Light
+`;
+
+      }
+
+      // =========================
+      // RESPONSE
+      // =========================
 
       res.json({
-        reply:
-          response.data
-          .choices[0]
-          .message
-          .content
+        reply
       });
 
     } catch (error) {
 
-      console.log(
-        error.response?.data ||
-        error.message
-      );
+      console.log(error);
 
       res.status(500).json({
-        error: "AI Chat Failed"
+
+        error:
+        "AI Assistant Failed"
+
       });
+
     }
+
   }
+
 );
 module.exports = router;

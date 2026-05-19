@@ -1,5 +1,5 @@
 const axios = require("axios");
-const Candidate = require("../models/Candidate");
+const Candidate = require("../models/Complaint");
 
 exports.aiShortlist = async (req, res) => {
 

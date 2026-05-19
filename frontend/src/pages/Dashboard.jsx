@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import DashboardLayout
 from "../layouts/DashboardLayout";
@@ -6,24 +6,17 @@ from "../layouts/DashboardLayout";
 import Hero
 from "../components/Hero";
 
-import CandidateForm
-from "../components/CandidateForm";
+import ComplaintForm
+from "../components/ComplaintForm";
 
-import JobForm
-from "../components/JobForm";
-
-import CandidateCard
-from "../components/CandidateCard";
-
-import MatchChart
-from "../charts/MatchChart";
-
-import SkillsChart
-from "../charts/SkillsChart";
+import ComplaintCard
+from "../components/ComplaintCard";
 
 import SearchBar
 from "../components/SearchBar";
 
+import API
+from "../services/api";
 
 function Dashboard() {
 
@@ -33,9 +26,33 @@ function Dashboard() {
   const [results, setResults] =
   useState([]);
 
-  const [aiResult, setAiResult] =
-  useState("");
+  // FETCH COMPLAINTS
+  useEffect(() => {
 
+    fetchComplaints();
+
+  }, []);
+
+  const fetchComplaints =
+  async () => {
+
+    try {
+
+      const response =
+      await API.get(
+        "/complaints"
+      );
+
+      setResults(
+        response.data
+      );
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+  };
 
   return (
 
@@ -45,27 +62,23 @@ function Dashboard() {
 
       <Hero />
 
-
-      {/* TOP FORMS */}
+      {/* COMPLAINT FORM */}
 
       <div className="
       grid
       grid-cols-1
-      lg:grid-cols-2
       gap-6
       ">
 
-        <CandidateForm />
-
-        <JobForm
-          setResults={setResults}
-          setAiResult={setAiResult}
+        <ComplaintForm
+          fetchComplaints={
+            fetchComplaints
+          }
         />
 
       </div>
 
-
-      {/* SEARCH */}
+      {/* SEARCH BAR */}
 
       <div className="mt-10">
 
@@ -76,8 +89,7 @@ function Dashboard() {
 
       </div>
 
-
-      {/* CANDIDATE RESULTS */}
+      {/* COMPLAINT CARDS */}
 
       <div className="
       grid
@@ -88,107 +100,29 @@ function Dashboard() {
       ">
 
         {
-          Array.isArray(results)
-
-          &&
-
           results
-          .filter((candidate) =>
 
-            candidate.skills &&
+          .filter((complaint) =>
 
-            candidate.skills.some((skill) =>
-
-              skill
-              .toLowerCase()
-              .includes(
-                search.toLowerCase()
-              )
-
+            complaint.location
+            ?.toLowerCase()
+            .includes(
+              search.toLowerCase()
             )
 
           )
-          .map((candidate) => (
 
-            <CandidateCard
-              key={candidate._id}
-              candidate={candidate}
+          .map((complaint) => (
+
+            <ComplaintCard
+              key={complaint._id}
+              complaint={complaint}
             />
 
           ))
         }
 
       </div>
-
-
-      {/* CHARTS */}
-
-      {
-        Array.isArray(results)
-
-        &&
-
-        results.length > 0 && (
-
-          <div className="
-          grid
-          grid-cols-1
-          lg:grid-cols-2
-          gap-6
-          mt-10
-          ">
-
-            <MatchChart
-              data={results}
-            />
-
-            <SkillsChart
-              data={results}
-            />
-
-          </div>
-
-        )
-      }
-
-
-      {/* AI RESULT */}
-
-      {
-        aiResult && (
-
-          <div className="
-          glass
-          p-6
-          rounded-2xl
-          mt-10
-          whitespace-pre-wrap
-          ">
-
-            <h2 className="
-            text-2xl
-            font-bold
-            mb-4
-            text-cyan-400
-            ">
-
-              AI Recommendation
-
-            </h2>
-
-            <p className="
-            text-slate-300
-            leading-8
-            ">
-
-              {aiResult}
-
-            </p>
-
-          </div>
-
-        )
-      }
 
     </DashboardLayout>
   );

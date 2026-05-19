@@ -75,7 +75,7 @@ function Sidebar() {
         mb-12
         ">
 
-          AI Recruiter
+          AI Complaint System
 
         </h1>
 
@@ -107,19 +107,19 @@ function Sidebar() {
         <div
           onClick={() =>
             navigate(
-              "/dashboard/candidates"
+              "/dashboard/complaints"
             )
           }
           className={
             menuClass(
-              "/dashboard/candidates"
+              "/dashboard/complaints"
             )
           }
         >
 
           <Users size={20} />
 
-          Candidates
+          Complaints
 
         </div>
 
@@ -128,19 +128,19 @@ function Sidebar() {
         <div
           onClick={() =>
             navigate(
-              "/dashboard/jobs"
+              "/dashboard/categories"
             )
           }
           className={
             menuClass(
-              "/dashboard/jobs"
+              "/dashboard/categories"
             )
           }
         >
 
           <Briefcase size={20} />
 
-          Jobs
+          Categories
 
         </div>
 
@@ -149,19 +149,19 @@ function Sidebar() {
         <div
           onClick={() =>
             navigate(
-              "/dashboard/ai-ranking"
+              "/dashboard/ai-analysis"
             )
           }
           className={
             menuClass(
-              "/dashboard/ai-ranking"
+              "/dashboard/ai-analysis"
             )
           }
         >
 
           <Brain size={20} />
 
-          AI Ranking
+          AI Analysis
 
         </div>
 
@@ -180,7 +180,7 @@ function Sidebar() {
 
           <MessageSquare size={20} />
 
-          Interview AI
+          Complaint Assistant
 
         </div>
 

@@ -26,10 +26,13 @@ function InterviewAssistant() {
 
       const response =
       await API.post(
+
         "/ai/interview-chat",
+
         {
-          message:question
+          message: question
         }
+
       );
 
       setAnswer(
@@ -40,9 +43,14 @@ function InterviewAssistant() {
 
       console.log(error);
 
+      setAnswer(
+        "AI Assistant is currently unavailable."
+      );
+
     } finally {
 
       setLoading(false);
+
     }
   };
 
@@ -51,31 +59,37 @@ function InterviewAssistant() {
     <DashboardLayout>
 
       <div className="
-      max-w-4xl
+      max-w-5xl
       mx-auto
       ">
 
+        {/* TITLE */}
+
         <h1 className="
-        text-4xl
+        text-5xl
         font-bold
         mb-3
+        text-cyan-400
         ">
 
-          AI Interview Assistant
+          AI Complaint Assistant
 
         </h1>
 
         <p className="
         text-slate-400
         mb-8
+        text-lg
         ">
 
-          Ask any interview question
-          and get AI-powered answers.
+          Ask AI about complaints,
+          departments, urgency,
+          public issues, reporting process
+          and complaint solutions.
 
         </p>
 
-        {/* INPUT */}
+        {/* AI INPUT BOX */}
 
         <div className="
         glass
@@ -84,31 +98,44 @@ function InterviewAssistant() {
         ">
 
           <textarea
+
             value={question}
+
             onChange={(e) =>
               setQuestion(e.target.value)
             }
+
             placeholder="
-Ask anything...
-Example:
-What is React?
-Explain Node.js event loop.
-Tell me HR interview tips.
+Examples:
+• Water leakage near highway
+• Electricity outage in Muradnagar
+• How to report garbage issue?
+• Complaint about broken road
+• Drain blockage issue
+• Women safety complaint
 "
+
             className="
             w-full
-            h-40
-            p-4
+            h-44
+            p-5
             rounded-xl
             bg-slate-900
             border
             border-slate-700
             outline-none
+            text-white
+            resize-none
             "
+
           />
 
           <button
+
             onClick={askAI}
+
+            disabled={loading}
+
             className="
             mt-5
             px-8
@@ -120,20 +147,22 @@ Tell me HR interview tips.
             font-bold
             hover:scale-105
             transition-all
+            disabled:opacity-50
             "
+
           >
 
             {
               loading
-              ? "Thinking..."
-              : "Ask AI"
+              ? "Analyzing..."
+              : "Ask AI Assistant"
             }
 
           </button>
 
         </div>
 
-        {/* ANSWER */}
+        {/* AI RESPONSE */}
 
         {
           answer && (
@@ -146,7 +175,20 @@ Tell me HR interview tips.
             whitespace-pre-wrap
             leading-8
             text-slate-300
+            border
+            border-cyan-500/20
             ">
+
+              <h2 className="
+              text-2xl
+              font-bold
+              mb-4
+              text-cyan-400
+              ">
+
+                AI Response
+
+              </h2>
 
               {answer}
 
